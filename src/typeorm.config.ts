@@ -5,10 +5,11 @@ import { User } from "./modules/users/entities/users.entity";
 import { Post } from "./modules/post/entities/post.entity";
 import { Comments } from "./modules/comment/entities/comment.entity";
 import { Like } from "./modules/post/entities/like.entity";
-import { Report } from "src/modules/post/entities/report.entity";
 import { Notification } from "src/modules/notifications/entities/notification.entity";
 import { Chat } from "src/modules/chat/entities/chat.entity";
 import { Message } from "src/modules/chat/entities/message.entity";
+import { Group } from "src/modules/group/entities/group.entity";
+import { GroupMember } from "src/modules/group/entities/group_member.entity";
 
 export const typeORMConfig: TypeOrmModuleOptions = {
   type: "postgres",
@@ -26,9 +27,10 @@ export const typeORMConfig: TypeOrmModuleOptions = {
     Like,
     Post,
     Comments,
-    Report,
     Notification,
     Chat,
     Message,
+    Group,
+    GroupMember,
   ],
 };

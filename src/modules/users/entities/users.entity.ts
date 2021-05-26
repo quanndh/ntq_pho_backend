@@ -4,8 +4,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
+  Index,
 } from "typeorm";
-import { ObjectType, Field } from "@nestjs/graphql";
+import { ObjectType, Field, HideField } from "@nestjs/graphql";
 import {
   Node,
   PaginationBase,
@@ -33,6 +34,11 @@ export class User implements Node {
 
   @Column({ length: 50 })
   nickname: string;
+
+  @Column({ nullable: true, type: "tsvector" })
+  @Index()
+  @HideField()
+  documentIdx: string;
 
   @Column({ nullable: true })
   intro?: string;

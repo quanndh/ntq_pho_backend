@@ -13,6 +13,7 @@ import { NotificationModule } from "src/modules/notifications/notification.modul
 import { ChatModule } from "src/modules/chat/chat.module";
 import { CronModule } from "./modules/cron/cron.module";
 import { ElasticModule } from "src/modules/elastic/elastic.module";
+import { GroupModule } from "src/modules/group/group.module";
 @Module({
   imports: [
     ElasticModule.register({ node: "http://localhost:9200" }),
@@ -39,6 +40,7 @@ import { ElasticModule } from "src/modules/elastic/elastic.module";
     NotificationModule,
     ChatModule,
     CronModule,
+    GroupModule,
   ],
   // providers: [JSONObjectScalar],
   controllers: [],

@@ -1,18 +1,22 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType } from "@nestjs/graphql";
+import { UserDepartmentEnum } from "src/graphql/enums/users/user_department.enum";
 
 @InputType()
 export class CreatePostInput {
   @Field(() => [Number], { nullable: true, defaultValue: [] })
-  medias: number[];
+  medias?: number[];
 
   @Field({ defaultValue: "" })
-  caption?: string;
+  caption: string;
 
-  @Field({ defaultValue: "" })
-  rawCaption?: string;
+  @Field({ nullable: true })
+  groupId?: number;
 
-  @Field({ defaultValue: true })
-  isPublic?: boolean;
+  @Field({ nullable: true })
+  department?: UserDepartmentEnum;
+
+  @Field({ defaultValue: false })
+  isPinned?: boolean;
 }
 
 @InputType()

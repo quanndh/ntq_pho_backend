@@ -2,7 +2,7 @@ import { Resolver, Args, Query } from "@nestjs/graphql";
 import { UsersService } from "../services/users.service";
 import { User, UserConnection } from "../entities/users.entity";
 import { UseGuards } from "@nestjs/common";
-import { GqlCookieAuthGuard } from "src/guards/gql-auth.guard";
+import { GqlAuthGuard, GqlCookieAuthGuard } from "src/guards/gql-auth.guard";
 import { UserDataLoader } from "../dataloaders/users.dataloader";
 import { CurrentUser } from "src/decorators/common.decorator";
 
@@ -16,12 +16,12 @@ export class UsersQueryResolver {
   @Query(() => User, {
     name: "me",
   })
-  @UseGuards(GqlCookieAuthGuard)
+  @UseGuards(GqlAuthGuard)
   whoAmI(@CurrentUser() user: User) {
     return this.userService.findById(user.id);
   }
 
-  @UseGuards(GqlCookieAuthGuard)
+  @UseGuards(GqlAuthGuard)
   @Query(() => User, { nullable: true })
   async getUserInfo(@Args("id") id: number): Promise<User | undefined> {
     return await this.userDataLoader.load(id);

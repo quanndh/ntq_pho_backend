@@ -14,9 +14,9 @@ import { ElasticModule } from "src/modules/elastic/elastic.module";
   imports: [
     TypeOrmModule.forFeature([User, UserRepository]),
     forwardRef(() => MediaModule),
-    forwardRef(() =>
-      ElasticModule.register({ node: process.env.ELASTIC_NODE })
-    ),
+    // forwardRef(() =>
+    //   ElasticModule.register({ node: process.env.ELASTIC_NODE })
+    // ),
   ],
   providers: [
     UserDataLoader,

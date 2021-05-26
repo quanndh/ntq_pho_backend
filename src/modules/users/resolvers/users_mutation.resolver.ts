@@ -2,14 +2,14 @@ import { Resolver, Args, Mutation } from "@nestjs/graphql";
 import { UsersService } from "../services/users.service";
 import { User } from "../entities/users.entity";
 import { UseGuards } from "@nestjs/common";
-import { GqlCookieAuthGuard } from "src/guards/gql-auth.guard";
+import { GqlAuthGuard, GqlCookieAuthGuard } from "src/guards/gql-auth.guard";
 import { CurrentUser } from "src/decorators/common.decorator";
 import { UpdateUserInput } from "../dto/new_user.input";
 @Resolver(() => User)
 export class UsersMutationResolver {
   constructor(private readonly userService: UsersService) {}
 
-  @UseGuards(GqlCookieAuthGuard)
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
   async updateUserInfo(
     @CurrentUser() user: User,
