@@ -9,6 +9,7 @@ import { AuthTokenEntity } from "../entities/auth.entity";
 import { DeepPartial, DeleteResult, FindConditions } from "typeorm";
 import { LoginSNSInput } from "src/modules/users/dto/new_user.input";
 import { google } from "googleapis";
+const oauth2 = google.oauth2("v2");
 
 type JwtGenerateOption = {
   audience?: string | string[];
@@ -136,12 +137,19 @@ export class AuthService {
     oauth2Client.setCredentials({ access_token: accessToken });
 
     try {
-      const oauth2 = google.oauth2({
-        auth: oauth2Client,
-        version: "v2",
+      const auth = new google.auth.GoogleAuth({
+        scopes: [
+          "openid",
+          "https://www.googleapis.com/auth/userinfo.email",
+          "https://www.googleapis.com/auth/userinfo.profile",
+          "https://www.googleapis.com/auth/userinfo.gender",
+        ],
       });
 
-      const res = await oauth2.userinfo.get();
+      google.options({ auth: oauth2Client });
+
+      // Do the magic
+      const res = await oauth2.userinfo.get({});
 
       const { data } = res;
 
