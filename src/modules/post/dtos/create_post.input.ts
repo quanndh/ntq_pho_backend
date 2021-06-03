@@ -1,5 +1,6 @@
 import { Field, InputType } from "@nestjs/graphql";
 import { UserDepartmentEnum } from "src/graphql/enums/users/user_department.enum";
+import { CreatePostOptionDto } from "src/modules/post/dtos/post_option.input";
 
 @InputType()
 export class CreatePostInput {
@@ -17,6 +18,9 @@ export class CreatePostInput {
 
   @Field({ defaultValue: false })
   isPinned?: boolean;
+
+  @Field(() => [CreatePostOptionDto])
+  options?: CreatePostOptionDto[];
 }
 
 @InputType()

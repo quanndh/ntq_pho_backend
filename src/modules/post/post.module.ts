@@ -1,9 +1,14 @@
 import { forwardRef, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { NotificationModule } from "src/modules/notifications/notification.module";
+import { PostOption } from "src/modules/post/entities/post_option.entity";
+import { PostOptionRepostory } from "src/modules/post/repositories/post_option.repository";
 import { LikeFieldResolver } from "src/modules/post/resolvers/likes/like_field.resolver";
 import { LikeQueryResolver } from "src/modules/post/resolvers/likes/like_query.resolver";
 import { LikeSubscriptionResolver } from "src/modules/post/resolvers/likes/like_subscription.resolver";
+import { PostOptionFieldResolver } from "src/modules/post/resolvers/post_option/post_option.field";
+import { PostOptionMutationResolver } from "src/modules/post/resolvers/post_option/post_option.mutation";
+import { PostOptionService } from "src/modules/post/services/post_option.service";
 import { CommentModule } from "../comment/comment.module";
 import { MediaModule } from "../media/media.module";
 import { UsersModule } from "../users/users.module";
@@ -20,7 +25,14 @@ import { PostService } from "./services/post.service";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Post, PostRepository, Like, LikeRepository]),
+    TypeOrmModule.forFeature([
+      Post,
+      PostRepository,
+      Like,
+      LikeRepository,
+      PostOption,
+      PostOptionRepostory,
+    ]),
     forwardRef(() => CommentModule),
     forwardRef(() => UsersModule),
     forwardRef(() => MediaModule),
@@ -36,7 +48,11 @@ import { PostService } from "./services/post.service";
     LikeQueryResolver,
     LikeSubscriptionResolver,
     LikeFieldResolver,
+    PostOptionService,
+    PostOptionFieldResolver,
+    PostMutationResolver,
+    PostOptionMutationResolver,
   ],
-  exports: [PostService, PostDataloader, LikeService],
+  exports: [PostService, PostDataloader, LikeService, PostOptionService],
 })
 export class PostModule {}

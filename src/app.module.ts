@@ -14,6 +14,7 @@ import { ChatModule } from "src/modules/chat/chat.module";
 import { CronModule } from "./modules/cron/cron.module";
 import { ElasticModule } from "src/modules/elastic/elastic.module";
 import { GroupModule } from "src/modules/group/group.module";
+import { TinderModule } from "src/modules/tinder/tinder.module";
 @Module({
   imports: [
     ElasticModule.register({ node: "http://localhost:9200" }),
@@ -41,6 +42,7 @@ import { GroupModule } from "src/modules/group/group.module";
     ChatModule,
     CronModule,
     GroupModule,
+    TinderModule,
   ],
   // providers: [JSONObjectScalar],
   controllers: [],

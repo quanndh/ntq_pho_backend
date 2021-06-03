@@ -32,6 +32,12 @@ export class TinderMatch extends BaseEntity implements Node {
   @Column({ enum: TinderMatchStatus })
   status: TinderMatchStatus;
 
+  @Column({ default: false })
+  isSuper: boolean;
+
+  @Column({ default: true })
+  isNew: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

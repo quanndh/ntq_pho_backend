@@ -137,15 +137,6 @@ export class AuthService {
     oauth2Client.setCredentials({ access_token: accessToken });
 
     try {
-      const auth = new google.auth.GoogleAuth({
-        scopes: [
-          "openid",
-          "https://www.googleapis.com/auth/userinfo.email",
-          "https://www.googleapis.com/auth/userinfo.profile",
-          "https://www.googleapis.com/auth/userinfo.gender",
-        ],
-      });
-
       google.options({ auth: oauth2Client });
 
       // Do the magic

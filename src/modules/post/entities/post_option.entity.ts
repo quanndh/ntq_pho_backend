@@ -1,5 +1,4 @@
 import { ObjectType } from "@nestjs/graphql";
-import { TinderGenderEnum } from "src/graphql/enums/tinder/tinder_gender.enum";
 import {
   Node,
   PaginationBase,
@@ -17,26 +16,20 @@ import {
   implements: [Node],
 })
 @Entity({
-  name: "tinder_profiles",
+  name: "post_options",
 })
-export class TinderProfile extends BaseEntity implements Node {
+export class PostOption extends BaseEntity implements Node {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column("text", { array: true })
-  images: string[];
-
-  @Column({ enum: TinderGenderEnum })
-  gender: TinderGenderEnum;
-
-  @Column({ enum: TinderGenderEnum })
-  target: TinderGenderEnum;
+  @Column()
+  postId: number;
 
   @Column()
-  intro: string;
+  content: string;
 
-  @Column()
-  userId: number;
+  @Column("text", { array: true, default: "{}" })
+  voted: number[];
 
   @CreateDateColumn()
   createdAt: Date;
@@ -46,4 +39,4 @@ export class TinderProfile extends BaseEntity implements Node {
 }
 
 @ObjectType()
-export class TinderProfileConnection extends PaginationBase(TinderProfile) {}
+export class PostOptionConnection extends PaginationBase(PostOption) {}

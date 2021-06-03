@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { createPaginationObject } from "src/modules/common/common.repository";
 import { PostCursorFindOptions } from "src/modules/post/dtos/post.args";
+import { PostOptionService } from "src/modules/post/services/post_option.service";
 import { UsersService } from "src/modules/users/services/users.service";
 import { DeepPartial, In, Not } from "typeorm";
 import { CreatePostInput } from "../dtos/create_post.input";
@@ -11,7 +12,7 @@ import { PostRepository } from "../repositories/post.repository";
 export class PostService {
   constructor(
     private readonly postRepository: PostRepository,
-    private readonly userService: UsersService
+    private readonly postOptionService: PostOptionService
   ) {}
 
   test = async (input: PostCursorFindOptions) => {
@@ -35,8 +36,14 @@ export class PostService {
   };
 
   create = async (creatorId: number, input: CreatePostInput): Promise<Post> => {
-    const newPost = this.postRepository.create({ creatorId, ...input });
-    return await this.postRepository.save(newPost);
+    const { options, ...rest } = input;
+    const newPost = this.postRepository.create({ creatorId, ...rest });
+    const savedPost = await this.postRepository.save(newPost);
+
+    if (options && options.length) {
+      await this.postOptionService.saveOptions(options, savedPost.id);
+    }
+    return savedPost;
   };
 
   update = async (input: DeepPartial<Post>): Promise<Post> => {

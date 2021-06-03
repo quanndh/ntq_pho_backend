@@ -10,6 +10,9 @@ import { Chat } from "src/modules/chat/entities/chat.entity";
 import { Message } from "src/modules/chat/entities/message.entity";
 import { Group } from "src/modules/group/entities/group.entity";
 import { GroupMember } from "src/modules/group/entities/group_member.entity";
+import { TinderProfile } from "src/modules/tinder/entities/tinder_profile.entity";
+import { TinderMatch } from "src/modules/tinder/entities/match.entity";
+import { PostOption } from "src/modules/post/entities/post_option.entity";
 
 export const typeORMConfig: TypeOrmModuleOptions = {
   type: "postgres",
@@ -32,5 +35,8 @@ export const typeORMConfig: TypeOrmModuleOptions = {
     Message,
     Group,
     GroupMember,
+    TinderProfile,
+    TinderMatch,
+    PostOption,
   ],
 };
