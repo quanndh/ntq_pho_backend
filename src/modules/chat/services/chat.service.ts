@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { ApolloError } from 'apollo-server';
-import moment from 'moment';
-import { Chat } from 'src/modules/chat/entities/chat.entity';
-import { Message } from 'src/modules/chat/entities/message.entity';
-import { ChatRepository } from 'src/modules/chat/repositories/chat.repository';
-import { createPaginationObject } from 'src/modules/common/common.repository';
-import { DeepPartial, MoreThan } from 'typeorm';
+import { Injectable } from "@nestjs/common";
+import { ApolloError } from "apollo-server";
+import moment from "moment";
+import { Chat } from "src/modules/chat/entities/chat.entity";
+import { Message } from "src/modules/chat/entities/message.entity";
+import { ChatRepository } from "src/modules/chat/repositories/chat.repository";
+import { createPaginationObject } from "src/modules/common/common.repository";
+import { DeepPartial, MoreThan } from "typeorm";
 
 @Injectable()
 export class ChatService {
@@ -22,12 +22,13 @@ export class ChatService {
   countUnseenMessageOfChat = async (userId: number, chatId: number) => {
     try {
       const a = await this.chatRepository
-        .createQueryBuilder('chat')
-        .innerJoin(Message, 'mess', 'mess.chatId = chat.id')
-        .andWhere('(mess.sender != :userId AND mess.received = false)', { userId })
-        .andWhere('chat.id = :chatId', { chatId })
+        .createQueryBuilder("chat")
+        .innerJoin(Message, "mess", "mess.chatId = chat.id")
+        .andWhere("(mess.sender != :userId AND mess.received = false)", {
+          userId,
+        })
+        .andWhere("chat.id = :chatId", { chatId })
         .getMany();
-      console.log(a);
       return 1;
     } catch (error) {
       throw new ApolloError(error.message);
@@ -37,11 +38,11 @@ export class ChatService {
   getChats = async (userId: number, limit: number, page: number) => {
     try {
       const [items, total] = await this.chatRepository
-        .createQueryBuilder('chat')
-        .where('chat.participants && ARRAY[:...userId]', { userId: [userId] })
+        .createQueryBuilder("chat")
+        .where("chat.participants && ARRAY[:...userId]", { userId: [userId] })
         .limit(limit)
         .offset((page - 1) * limit)
-        .orderBy('chat.updatedAt', 'DESC')
+        .orderBy("chat.updatedAt", "DESC")
         .getManyAndCount();
       return createPaginationObject(items, total, page, limit);
     } catch (error) {
@@ -52,9 +53,9 @@ export class ChatService {
   getExist = async (participants: number[]) => {
     try {
       return await this.chatRepository
-        .createQueryBuilder('chat')
+        .createQueryBuilder("chat")
         .where(
-          `chat.participants::int[] = ARRAY[${participants[0]}, ${participants[1]}] OR chat.participants::int[] = ARRAY[${participants[1]}, ${participants[0]}]`,
+          `chat.participants::int[] = ARRAY[${participants[0]}, ${participants[1]}] OR chat.participants::int[] = ARRAY[${participants[1]}, ${participants[0]}]`
         )
         .getOne();
     } catch (error) {
@@ -79,10 +80,12 @@ export class ChatService {
   getChatHasUnseenMessage = async (userId: number) => {
     try {
       const chats = await this.chatRepository
-        .createQueryBuilder('chat')
-        .innerJoin(Message, 'mess', 'mess.chatId = chat.id')
-        .where('chat.participants && ARRAY[:...users]', { users: [userId] })
-        .andWhere('(mess.sender != :userId AND mess.received = false)', { userId })
+        .createQueryBuilder("chat")
+        .innerJoin(Message, "mess", "mess.chatId = chat.id")
+        .where("chat.participants && ARRAY[:...users]", { users: [userId] })
+        .andWhere("(mess.sender != :userId AND mess.received = false)", {
+          userId,
+        })
         .getMany();
       return chats.map((item) => item.id);
     } catch (error) {
@@ -103,7 +106,7 @@ export class ChatService {
     try {
       await this.chatRepository.delete({
         isTemp: true,
-        createdAt: MoreThan(moment().subtract(30, 'minutes').toDate()),
+        createdAt: MoreThan(moment().subtract(30, "minutes").toDate()),
       });
     } catch (error) {
       throw new Error(error.message);
